@@ -1,4 +1,4 @@
-name: Deploy a static website on AWS S3 Bucket
+name: Deploy a Nodejs app on AWS using GithubActions
 
 on:
   workflow_dispatch:
