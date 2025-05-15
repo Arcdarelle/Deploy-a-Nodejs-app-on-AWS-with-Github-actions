@@ -40,25 +40,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ecr-terraform-state-file
-          path: |
-            cd ecr
-            ecr.tfstate
+          path: ecr/ecr.tfstate
             
       - name: Upload the script to build the frontend and the backend images 
         uses: actions/upload-artifact@v4
         with:
           name: scripts-to-build-the-images
-          path: |
-            cd ecr
-            docker-build-script.sh
+          path: ecr/docker-build-script.sh
           
       - name: Upload the script to push the frontend and the backend images
         uses: actions/upload-artifact@v4
         with:
           name: scripts-to-push-the-images
-          path: |
-            cd ecr
-            docker-push-script.sh
+          path: ecr/docker-push-script.sh
 
 # Build backend and frontend images to the ECR repository previously created using the docker-build-script.sh  generated
   Build-backend-and-frontend-images-to-ECR:
