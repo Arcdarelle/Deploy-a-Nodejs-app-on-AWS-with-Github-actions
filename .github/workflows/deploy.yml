@@ -68,9 +68,6 @@ jobs:
             version: 2                         
             verbose: false                     
             arch: amd64
-
-      - name: Install Docker
-        uses: docker-practice/actions-setup-docker@v1
             
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -96,9 +93,6 @@ jobs:
             version: 2                         
             verbose: false                     
             arch: amd64
-
-      - name: Install Docker
-        uses: docker-practice/actions-setup-docker@v1
             
       - name: Download artifact
         uses: actions/download-artifact@v4
