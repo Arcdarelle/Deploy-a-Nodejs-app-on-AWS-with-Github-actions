@@ -19,6 +19,8 @@ locals {
 resource "local_file" "docker_build_script" {
   content = <<-EOT
     #!/bin/bash
+
+    cd ecr
     
     # Build The Frontend Image from the Dockerfile of the frontend
     echo "Building frontend Docker image from the Dockerfile of the frontend"
