@@ -30,7 +30,7 @@ resource "local_file" "docker_build_script" {
   EOT
 
   filename        = "${path.module}/docker-build-script.sh"
-  file_permission = "0755"
+  file_permission = "0777"
 }
 
 # Push script
@@ -51,5 +51,5 @@ resource "local_file" "docker_push_script" {
   EOT
 
   filename        = "${path.module}/docker-push-script.sh"
-  file_permission = "0755"
+  file_permission = "0777"
 }
