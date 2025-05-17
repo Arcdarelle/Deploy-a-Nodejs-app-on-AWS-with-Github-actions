@@ -35,6 +35,10 @@ jobs:
             cd ecr
             terraform init 
             terraform apply -auto-approve -state=ecr.tfstate
+
+      - name: Print the Terraform State file ecr.tfstate
+        run: |
+            cd ecr
             cat ecr.tfstate
     
       - name: Upload the Terraform State file ecr.tfstate
@@ -76,6 +80,7 @@ jobs:
       - name: Build backend and frontend Docker images
         run: |
           ls
+          sudo chmod +x docker-build-script.sh
           sudo ./docker-build-script.sh        
 
 # Push backend and frontend images to the ECR repository previously created using the docker-build-script.sh  generated
@@ -99,6 +104,7 @@ jobs:
       - name: Build backend and frontend Docker images
         run: |
           ls
+          sudo chmod +x docker-push-script.sh
           sudo ./docker-push-script.sh        
 
       
@@ -165,7 +171,10 @@ jobs:
         run: |
           terraform init -input=false
           terraform apply -auto-approve ecs-apply-plan.tfplan -state=ecs.tfstate 
-          cat ecs.tfstate
+      
+      - name: Print the Terraform State file ecs.tfstate
+        run: |
+            cat ecs.tfstate
       
       - name: Upload the Terraform State file ecs.tfstate
         uses: actions/upload-artifact@v4
