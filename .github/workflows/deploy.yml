@@ -11,7 +11,7 @@ env:
 
 jobs:
 
-  # Create the infrastructure on AWS with the ressources in the ecr directory
+# Create the infrastructure on AWS with the ressources in the ecr directory
   Create-the-infrastructure-in-AWS:
     runs-on: ubuntu-latest
     steps:
@@ -59,8 +59,8 @@ jobs:
           name: scripts-to-push-the-images
           path: ecr/docker-push-script.sh
 
-# Build backend and frontend images to the ECR repository previously created using the docker-build-script.sh  generated
-  Build-backend-and-frontend-images-to-ECR:
+# Build and Push the backend and frontend images to the ECR repository previously created using the docker-build-script.sh and docker-push-script.sh generated
+  Build-and-Push-backend-and-frontend-images-to-ECR:
     runs-on: ubuntu-latest
     needs: Create-the-infrastructure-in-AWS
     steps:
@@ -75,7 +75,7 @@ jobs:
             verbose: false                     
             arch: amd64
             
-      - name: Download artifact
+      - name: Download the script to build the frontend and the backend images
         uses: actions/download-artifact@v4
         with:
           name: scripts-to-build-the-images
@@ -84,35 +84,19 @@ jobs:
         run: |
           ls
           sudo chmod +x docker-build-script.sh
-          sudo ./docker-build-script.sh        
+          sudo ./docker-build-script.sh 
 
-# Push backend and frontend images to the ECR repository previously created using the docker-build-script.sh  generated
-  Push-backend-and-frontend-images-to-ECR:
-    runs-on: ubuntu-latest
-    needs: Build-backend-and-frontend-images-to-ECR
-    steps:
-      
-      - name: Checkout Code
-        uses: actions/checkout@v3
-        
-      - name: Install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-        with:
-            version: 2                         
-            verbose: false                     
-            arch: amd64
-            
-      - name: Download artifact
+      - name: Download the script to push the frontend and the backend images
         uses: actions/download-artifact@v4
         with:
           name: scripts-to-push-the-images
 
-      - name: Build backend and frontend Docker images
+      - name: Push backend and frontend Docker images
         run: |
           ls
           sudo chmod +x docker-push-script.sh
-          sudo ./docker-push-script.sh        
-
+          sudo ./docker-push-script.sh      
+                  
       
   # Initialising the terraform code to Launch the frontend and the backend app
   Initialising-the-terraform-code-to-Launch-the-frontend-and-the-backend-app:
