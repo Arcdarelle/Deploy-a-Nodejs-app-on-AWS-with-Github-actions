@@ -101,7 +101,7 @@ jobs:
   # Initialising the terraform code to Launch the frontend and the backend app
   Initialising-the-terraform-code-to-Launch-the-frontend-and-the-backend-app:
     runs-on: ubuntu-latest
-    needs: Push-backend-and-frontend-images-to-ECR
+    needs: Build-and-Push-backend-and-frontend-images-to-ECR
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
