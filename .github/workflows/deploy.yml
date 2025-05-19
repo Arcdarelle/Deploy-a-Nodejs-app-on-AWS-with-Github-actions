@@ -3,11 +3,13 @@ name: Deploy a Nodejs app on AWS using GithubActions
 on:
   workflow_dispatch:
 
-# Config the aws credentials and call it here
 env:
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_REGION: us-east-2
+    FRONTEND_REPO: 885684264653.dkr.ecr.us-east-2.amazonaws.com/node-frontend-repo
+    BACKEND_REPO: 885684264653.dkr.ecr.us-east-2.amazonaws.com/node-backend-repo
+    TAG: latest
 
 jobs:
 
@@ -86,13 +88,6 @@ jobs:
           role-to-assume: arn:aws:iam::885684264653:role/github-actions-oidc-role
           aws-region: us-east-2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2
-
       - name: Download the script to build the frontend and the backend images
         uses: actions/download-artifact@v4
         with:
@@ -105,8 +100,15 @@ jobs:
       - name: Build backend and frontend Docker images
         run: |
           ls
-          sudo chmod +x docker-build-script.sh
-          sudo ./docker-build-script.sh 
+          cd ecr
+    
+          # Build The Frontend Image from the Dockerfile of the frontend
+          echo "Building frontend Docker image from the Dockerfile of the frontend"
+          docker build -t $FRONTEND_REPO:$TAG frontend
+
+          # Build The Backend Image from the Dockerfile of the backend
+          echo "Building backend Docker image from the Dockerfile of the backend"
+          docker build -t $BACKEND_REPO:$TAG backend
 
       - name: Download the script to push the frontend and the backend images
         uses: actions/download-artifact@v4
@@ -116,9 +118,13 @@ jobs:
       - name: Push backend and frontend Docker images
         run: |
           ls
-          cat docker-push-script.sh
-          sudo chmod +x docker-push-script.sh
-          sudo ./docker-push-script.sh      
+          # Push The Frontend Image to the frontend ECR repository
+            echo "Pushing frontend Docker image to the frontend ECR repository"
+            docker push $FRONTEND_REPO:$TAG 
+
+            # Push The Backend Image to the backend ECR repositor
+            echo "Pushing backend Docker image. to the backend ECR repository"
+            docker push $BACKEND_REPO:$TAG     
                   
       
   # Initialising the terraform code to Launch the frontend and the backend app
