@@ -12,7 +12,7 @@ variable "backend_app_name" {
 }
 variable "project_name" {
     type = string
-    default = "Challenge-node-app"
+    default = "Challenge-nodejs-app"
 }
 variable "VPC_cidr" {
   type = string
