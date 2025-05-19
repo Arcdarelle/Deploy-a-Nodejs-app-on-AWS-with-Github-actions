@@ -104,10 +104,10 @@ jobs:
             # Push The Backend Image to the backend ECR repositor
             echo "Pushing backend Docker image. to the backend ECR repository"
             docker push $BACKEND_REPO:$TAG     
-                  
       
-  # Initialising the terraform code to Launch the frontend and the backend app
-  Initialising-the-terraform-code-to-Launch-the-frontend-and-the-backend-app:
+
+  # Applying the terraform code to Launch the frontend and the backend app
+  Apply-the-terraform-code-to-Launch-the-frontend-and-the-backend-app:
     runs-on: ubuntu-latest
     needs: Build-and-Push-backend-and-frontend-images-to-ECR
     steps:
@@ -126,49 +126,10 @@ jobs:
             verbose: false                     
             arch: amd64    
 
-      - name: Use the tfapply artifact
-        run: |
-          terraform init -input=false
-          terraform plan -out=ecs-apply-plan.tfplan
-      
-      - name: Upload artifact for terraform apply
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output-ecs-apply-plan.tfplan-and-terraform-state
-          path: |
-            ecs-apply-plan.tfplan
-            terraform.tfstate
-      
-
-  # Applying the terraform code to Launch the frontend and the backend app
-  Apply-the-terraform-code-to-Launch-the-frontend-and-the-backend-app:
-    runs-on: ubuntu-latest
-    needs: Initialising-the-terraform-code-to-Launch-the-frontend-and-the-backend-app
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.0
-          
-      - name: Install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-        with:
-            version: 2                         
-            verbose: false                     
-            arch: amd64    
-            
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output-ecs-apply-plan.tfplan-and-terraform-state
-
       - name: Use the ecs-apply-plan.tfplan artifact
         run: |
           terraform init -input=false
-          terraform apply -auto-approve ecs-apply-plan.tfplan -state=ecs.tfstate 
+          terraform apply -auto-approve -state=ecs.tfstate 
       
       - name: Print the Terraform State file ecs.tfstate
         run: |
