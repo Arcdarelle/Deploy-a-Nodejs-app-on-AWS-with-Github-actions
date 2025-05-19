@@ -91,6 +91,10 @@ jobs:
         with:
           name: scripts-to-build-the-images
 
+      - name: Login to Amazon ECR
+        id: login_ecr
+        uses: aws-actions/amazon-ecr-login@v2     
+
       - name: Build backend and frontend Docker images
         run: |
           ls
