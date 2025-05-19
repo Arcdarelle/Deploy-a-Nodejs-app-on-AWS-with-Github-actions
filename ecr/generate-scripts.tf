@@ -39,6 +39,9 @@ resource "local_file" "docker_build_script" {
 resource "local_file" "docker_push_script" {
   content = <<-EOT
     #!/bin/bash
+    
+    echo "Logging in to ECR"
+    ${local.ecr-login}
 
     # Push The Frontend Image to the frontend ECR repository
     echo "Pushing frontend Docker image to the frontend ECR repository"
