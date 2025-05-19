@@ -63,6 +63,10 @@ jobs:
   Build-and-Push-backend-and-frontend-images-to-ECR:
     runs-on: ubuntu-latest
     needs: Create-the-infrastructure-in-AWS
+    # Required for GitHub OIDC
+    permissions:
+      contents: read
+      id-token: write
     steps:
       
       - name: Checkout Code
