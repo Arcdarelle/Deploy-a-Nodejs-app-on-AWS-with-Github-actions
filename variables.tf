@@ -36,7 +36,7 @@ variable "cluster_name" {
 }
 variable "project_name" {
     type = string
-    default = "Challenge-node-js-app"
+    default = "Challenge-node-app"
 }
 variable "backend_port" {
     description = "port of the backend app"
