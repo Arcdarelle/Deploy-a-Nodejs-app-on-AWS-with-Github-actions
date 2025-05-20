@@ -46,5 +46,5 @@ variable "backend_port" {
 variable "frontend_port" {
     description = "port of the frontend app"
     type = number
-    default = 3000 
+    default = 80 
 }
