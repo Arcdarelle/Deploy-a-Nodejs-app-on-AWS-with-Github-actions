@@ -170,7 +170,7 @@ resource "aws_ecs_task_definition" "frontend_task_definition" {
             "environment": [
                 {
                     "name": "REACT_APP_API_URL",
-                    "value": "http://${data.aws_alb.backend_lb.dns_name}:${var.backend_port}/"
+                    "value": "http://${data.aws_alb.backend_lb.dns_name}/"
                 }
             ]
         }
