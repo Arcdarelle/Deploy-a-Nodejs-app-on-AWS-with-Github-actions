@@ -186,7 +186,7 @@ jobs:
 # The wait-for-approval Job - manual approval implement with the environment approval feature
   wait-for-ecr-approval:
     runs-on: ubuntu-latest
-    needs: Apply-the-terraform-code-to-Launch-the-frontend-and-the-backend-app
+    needs: Create-the-infrastructure-in-AWS
     environment:
       name: destroy-approval # Environment requiring manual approval
     steps:
