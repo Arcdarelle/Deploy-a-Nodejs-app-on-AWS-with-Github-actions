@@ -5,8 +5,6 @@ COPY --chown=node:node package*.json ./
 USER node
 RUN npm install
 COPY --chown=node:node . ./
-ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
 EXPOSE 3000
 
 CMD [ "npm", "start" ]

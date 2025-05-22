@@ -36,18 +36,18 @@ jobs:
         run: |
             cd ecr
             terraform init 
-            terraform apply -auto-approve -state=ecr.tfstate
+            terraform apply -auto-approve 
 
-      - name: Print the Terraform State file ecr.tfstate
+      - name: Print the Terraform State file ecr terraform.tfstate
         run: |
             cd ecr
-            cat ecr.tfstate
+            cat terraform.tfstate
     
       - name: Upload the Terraform State file ecr.tfstate
         uses: actions/upload-artifact@v4
         with:
           name: ecr-terraform-state-file
-          path: ecr/ecr.tfstate
+          path: ecr/terraform.tfstate
           
 
 # Build and Push the backend and frontend images to the ECR repository previously created using the docker-build-script.sh and docker-push-script.sh generated
@@ -129,17 +129,17 @@ jobs:
       - name: Use the ecs-apply-plan.tfplan artifact
         run: |
           terraform init -input=false
-          terraform apply -auto-approve -state=ecs.tfstate 
+          terraform apply -auto-approve  
       
-      - name: Print the Terraform State file ecs.tfstate
+      - name: Print the Terraform State file ecs terraform.tfstate
         run: |
-            cat ecs.tfstate
+            cat terraform.tfstate
       
       - name: Upload the Terraform State file ecs.tfstate
         uses: actions/upload-artifact@v4
         with:
           name: ecs-terraform-state-file
-          path: ecs.tfstate          
+          path: terraform.tfstate        
 
 # The wait-for-approval Job - manual approval implement with the environment approval feature
   wait-for-ecs-destroy-approval:
