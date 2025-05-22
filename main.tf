@@ -111,7 +111,7 @@ resource "aws_ecs_task_definition" "backend_task_definition" {
             "environment": [
                 {
                     "name": "REACT_APP_ORIGIN",
-                    "value": "http://${data.aws_alb.frontend_lb.dns_name}"
+                    "value": "http://${data.aws_alb.frontend_lb.dns_name}:${var.frontend_port}"
                 }
             ]
         }
